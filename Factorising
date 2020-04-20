@@ -1,3 +1,5 @@
+import dwavebinarycsp as dbc
+
 P = 21
 bP = "{:06b}".format(P)
 print(bP)
@@ -12,7 +14,7 @@ fixed_variables = {var: int(x) for(var, x) in fixed_variables.items()}
 for var, value in fixed_variables.items():
     bqm.fix_variable(var, value)
 
-from helpers.solvers import default_solver
+from solvers import default_solver
 my_solver, my_token = default_solver()
 
 from dwave.system.samplers import DWaveSampler
@@ -20,7 +22,7 @@ sampler = DWaveSampler(solver={'qpu': True})
 _, target_edgelist, target_adjacency = sampler.structure
 
 from dwave.embedding import embed_bqm, unembed_sampleset
-from helpers.embedding import embeddings
+from embedding import embeddings
 
 embedding = embeddings[sampler.solver.id]
 bqm_embedded = embed_bqm(bqm, embedding, target_adjacency, 3.0)
@@ -33,7 +35,7 @@ if 'answer_mode' in sampler.parameters:
 response = sampler.sample(bqm_embedded, **kwargs)
 response = unembed_sampleset(response, embedding, source_bqm=bqm)
 
-from helpers.convert import to_base_ten
+from convert import to_base_ten
 sample = next(response.samples(n=1))
 dict(sample)
 a, b = to_base_ten(sample)
