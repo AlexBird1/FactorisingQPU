@@ -1,2 +1,2 @@
 # FactorisingQPU
-running factorising example from leap and modifying 
+Code for factorising an intger on the D-Wave QPU using a three bit multiplication circuit
